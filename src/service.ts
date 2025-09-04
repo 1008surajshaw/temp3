@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import app from './lib/app';
-import sequelize from './config/database';
+import connectDB from './config/mongodb';
 
 dotenv.config();
 
@@ -8,13 +8,9 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
   try {
-    // Test database connection
-    await sequelize.authenticate();
-    console.log('Database connection established successfully.');
-
-    // Sync database models
-    await sequelize.sync();
-    console.log('Database synchronized.');
+    // Connect to MongoDB
+    await connectDB();
+    console.log('MongoDB connection established successfully.');
 
     // Start server
     app.listen(PORT, () => {

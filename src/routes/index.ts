@@ -1,5 +1,12 @@
 import { Router } from 'express';
-import userRoutes from './userRoutes';
+import ownerRoutes from './ownerRoutes';
+import organizationRoutes from './organizationRoutes';
+import featureRoutes from './featureRoutes';
+import planRoutes from './planRoutes';
+import usageRoutes from './usageRoutes';
+import userPlanRoutes from './userPlanRoutes';
+import featureUserRoutes from './featureUserRoutes';
+import analyticsRoutes from './analyticsRoutes';
 
 const router = Router();
 
@@ -8,7 +15,14 @@ router.get('/', (req, res) => {
   res.json({ message: 'API is running!', timestamp: new Date().toISOString() });
 });
 
-// Feature routes
-router.use('/users', userRoutes);
+// API routes
+router.use('/owners', ownerRoutes);
+router.use('/organizations', organizationRoutes);
+router.use('/features', featureRoutes);
+router.use('/plans', planRoutes);
+router.use('/usage', usageRoutes);
+router.use('/user-plans', userPlanRoutes);
+router.use('/feature-users', featureUserRoutes);
+router.use('/analytics', analyticsRoutes);
 
 export default router;

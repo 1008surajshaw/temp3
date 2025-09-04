@@ -1,0 +1,855 @@
+{
+  "info": {
+    "name": "Backend Starter Pack API",
+    "description": "Complete API collection for testing all endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Owner Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@company.com\",\n  \"password\": \"securepassword123\",\n  \"accountType\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owners/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners", "register"]
+            }
+          }
+        },
+        {
+          "name": "Owner Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('token', response.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@company.com\",\n  \"password\": \"securepassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owners/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Owner Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owners/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners", "profile"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Owners Management",
+      "item": [
+        {
+          "name": "Get All Owners",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owners",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners"]
+            }
+          }
+        },
+        {
+          "name": "Get Owner by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owners/{{ownerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners", "{{ownerId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Owner",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Admin User\",\n  \"accountType\": \"superadmin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/owners/{{ownerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners", "{{ownerId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Owner",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owners/{{ownerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["owners", "{{ownerId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "Create Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Google Inc\",\n  \"description\": \"Technology company\",\n  \"ownerId\": \"{{ownerId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/organizations",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations"]
+            }
+          }
+        },
+        {
+          "name": "Get All Organizations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/organizations",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations"]
+            }
+          }
+        },
+        {
+          "name": "Get Organization by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/organizations/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Organizations by Owner",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/organizations/owner/{{ownerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "owner", "{{ownerId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Organization",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Google LLC\",\n  \"description\": \"Updated technology company\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/organizations/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Organization",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/organizations/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["organizations", "{{organizationId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Features",
+      "item": [
+        {
+          "name": "Create Feature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gmail\",\n  \"description\": \"Email service\",\n  \"organizationId\": \"{{organizationId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/features",
+              "host": ["{{baseUrl}}"],
+              "path": ["features"]
+            }
+          }
+        },
+        {
+          "name": "Get All Features",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/features",
+              "host": ["{{baseUrl}}"],
+              "path": ["features"]
+            }
+          }
+        },
+        {
+          "name": "Get Feature by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/features/{{featureId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["features", "{{featureId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Features by Organization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/features/organization/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["features", "organization", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Feature",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Gmail Pro\",\n  \"description\": \"Enhanced email service\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/features/{{featureId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["features", "{{featureId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Feature",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/features/{{featureId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["features", "{{featureId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Plans",
+      "item": [
+        {
+          "name": "Create Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Business Plan\",\n  \"description\": \"Business tier plan\",\n  \"price\": 50,\n  \"organizationId\": \"{{organizationId}}\",\n  \"features\": [\n    {\n      \"featureId\": \"{{featureId}}\",\n      \"limit\": 1000,\n      \"isUnlimited\": false\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "Get All Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "Get Plan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plans/{{planId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans", "{{planId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Plans by Organization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plans/organization/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans", "organization", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Plan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Premium Business Plan\",\n  \"price\": 75\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plans/{{planId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans", "{{planId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Plan",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plans/{{planId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans", "{{planId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Feature Users",
+      "item": [
+        {
+          "name": "Create Feature User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@company.com\",\n  \"featureId\": \"{{featureId}}\",\n  \"organizationId\": \"{{organizationId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/feature-users",
+              "host": ["{{baseUrl}}"],
+              "path": ["feature-users"]
+            }
+          }
+        },
+        {
+          "name": "Get Feature User by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/feature-users/{{featureUserId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["feature-users", "{{featureUserId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Feature Users by Feature",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/feature-users/feature/{{featureId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["feature-users", "feature", "{{featureId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Feature Users by Organization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/feature-users/organization/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["feature-users", "organization", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Validate Feature User Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessToken\": \"{{featureUserToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/feature-users/validate",
+              "host": ["{{baseUrl}}"],
+              "path": ["feature-users", "validate"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Feature User",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/feature-users/{{featureUserId}}/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["feature-users", "{{featureUserId}}", "deactivate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Plans",
+      "item": [
+        {
+          "name": "Create User Plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{featureUserId}}\",\n  \"planId\": \"{{planId}}\",\n  \"organizationId\": \"{{organizationId}}\",\n  \"expiryDate\": \"2024-12-31T23:59:59.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans"]
+            }
+          }
+        },
+        {
+          "name": "Get User Plan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/{{userPlanId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "{{userPlanId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get User Plans by User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/user/{{featureUserId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "user", "{{featureUserId}}"]
+            }
+          }
+        },
+        {
+          "name": "Validate User Plan Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessToken\": \"{{userPlanToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/validate",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "validate"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate User Plan",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/{{userPlanId}}/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "{{userPlanId}}", "deactivate"]
+            }
+          }
+        },
+        {
+          "name": "Upgrade User Plan",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPlanId\": \"{{newPlanId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/{{userPlanId}}/upgrade",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "{{userPlanId}}", "upgrade"]
+            }
+          }
+        },
+        {
+          "name": "Downgrade User Plan",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPlanId\": \"{{basicPlanId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/{{userPlanId}}/downgrade",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "{{userPlanId}}", "downgrade"]
+            }
+          }
+        },
+        {
+          "name": "Remove User Plan",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/{{userPlanId}}/remove",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "{{userPlanId}}", "remove"]
+            }
+          }
+        },
+        {
+          "name": "Extend Plan Expiry",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newExpiryDate\": \"2025-12-31T23:59:59.000Z\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/{{userPlanId}}/extend",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "{{userPlanId}}", "extend"]
+            }
+          }
+        },
+        {
+          "name": "Get Plan History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user-plans/history/{{featureUserId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["user-plans", "history", "{{featureUserId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usage Tracking",
+      "item": [
+        {
+          "name": "Track Usage",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accessToken\": \"{{userPlanToken}}\",\n  \"featureId\": \"{{featureId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usage/track",
+              "host": ["{{baseUrl}}"],
+              "path": ["usage", "track"]
+            }
+          }
+        },
+        {
+          "name": "Get Usage Stats by Organization",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usage/organization/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usage", "organization", "{{organizationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Feature Usage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usage/feature/{{featureId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usage", "feature", "{{featureId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Organization Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/organization/{{organizationId}}?startDate=2024-01-01&endDate=2024-12-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "organization", "{{organizationId}}"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Feature Analytics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/feature/{{featureId}}?startDate=2024-01-01&endDate=2024-12-31",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "feature", "{{featureId}}"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-12-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard", "{{organizationId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "API Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": ["{{baseUrl}}"],
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "Server Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
