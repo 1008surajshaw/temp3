@@ -7,6 +7,7 @@ import usageRoutes from './usageRoutes';
 import userPlanRoutes from './userPlanRoutes';
 import featureUserRoutes from './featureUserRoutes';
 import analyticsRoutes from './analyticsRoutes';
+import dashboardRoutes from './dashboardRoutes';
 
 const router = Router();
 
@@ -24,5 +25,6 @@ router.use('/usage', usageRoutes);
 router.use('/user-plans', userPlanRoutes);
 router.use('/feature-users', featureUserRoutes);
 router.use('/analytics', analyticsRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 export default router;

@@ -321,6 +321,11 @@ export const analyticsService = {
   async getDashboardStats(organizationId: string): Promise<DashboardStats> {
     const response = await apiClient.get(`/analytics/dashboard/${organizationId}`);
     return response.data;
+  },
+
+  async getComprehensiveDashboard(organizationId: string): Promise<DashboardResponse> {
+    const response = await apiClient.get(`/dashboard/organization/${organizationId}`);
+    return response;
   }
 };
 ```

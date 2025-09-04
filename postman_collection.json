@@ -821,6 +821,23 @@
       ]
     },
     {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Organization Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/organization/{{organizationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["dashboard", "organization", "{{organizationId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "Health Check",
       "item": [
         {
