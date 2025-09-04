@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { CreateOrganizationDto, UpdateOrganizationDto } from '../dto/organization.dto';
 import * as organizationRepository from '../repositories/OrganizationRepository';
+import * as ownerRepository from '../repositories/OwnerRepository';
+import { AuthRequest } from '../middleware/auth';
 
 const mapToResponseDto = (organization: any) => ({
   id: organization._id.toString(),
@@ -11,10 +13,19 @@ const mapToResponseDto = (organization: any) => ({
   createdAt: organization.createdAt
 });
 
-export const createOrganization = async (req: Request, res: Response): Promise<void> => {
+export const createOrganization = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const organizationData: CreateOrganizationDto = req.body;
     const organization = await organizationRepository.createOrganization(organizationData);
+    
+    // Update owner's organizationCreated flag if this is their first organization
+    if (req.owner) {
+      const owner = await ownerRepository.findOwnerById(req.owner.ownerId);
+      if (owner && !owner.organizationCreated) {
+        await ownerRepository.updateOrganizationCreated(req.owner.ownerId);
+      }
+    }
+    
     res.status(201).json({ success: true, data: mapToResponseDto(organization) });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });

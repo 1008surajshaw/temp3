@@ -24,6 +24,7 @@ export interface OwnerResponseDto {
   email: string;
   accountType: string;
   organizationId?: string;
+  organizationCreated: boolean;
   isActive: boolean;
   createdAt: Date;
 }

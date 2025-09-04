@@ -15,6 +15,14 @@ export const comparePassword = async (plainPassword: string, hashedPassword: str
   return await bcrypt.compare(plainPassword, hashedPassword);
 };
 
+export const updateOrganizationCreated = async (ownerId: string): Promise<IOwner | null> => {
+  return await Owner.findByIdAndUpdate(
+    ownerId,
+    { organizationCreated: true },
+    { new: true }
+  );
+};
+
 export const findOwnerById = async (id: string): Promise<IOwner | null> => {
   return await Owner.findById(id).populate('organizationId');
 };

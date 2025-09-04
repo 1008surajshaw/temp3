@@ -10,6 +10,7 @@ const mapToResponseDto = (owner: any) => ({
   email: owner.email,
   accountType: owner.accountType,
   organizationId: owner.organizationId?.toString(),
+  organizationCreated: owner.organizationCreated,
   isActive: owner.isActive,
   createdAt: owner.createdAt
 });
