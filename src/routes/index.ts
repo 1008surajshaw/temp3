@@ -8,6 +8,7 @@ import userPlanRoutes from './userPlanRoutes';
 import featureUserRoutes from './featureUserRoutes';
 import analyticsRoutes from './analyticsRoutes';
 import dashboardRoutes from './dashboardRoutes';
+import userDetailsRoutes from './userDetailsRoutes';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/user-plans', userPlanRoutes);
 router.use('/feature-users', featureUserRoutes);
 router.use('/analytics', analyticsRoutes);
 router.use('/dashboard', dashboardRoutes);
+router.use('/user', userDetailsRoutes);
 
 export default router;

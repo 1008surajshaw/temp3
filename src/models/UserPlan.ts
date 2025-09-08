@@ -5,6 +5,7 @@ export interface IUserPlan extends Document {
   planId: mongoose.Types.ObjectId;
   organizationId: mongoose.Types.ObjectId;
   accessToken: string;
+  tokenExpiryDate: Date;
   purchaseDate: Date;
   expiryDate: Date;
   isActive: boolean;
@@ -17,6 +18,7 @@ const UserPlanSchema = new Schema<IUserPlan>({
   planId: { type: Schema.Types.ObjectId, ref: 'Plan', required: true },
   organizationId: { type: Schema.Types.ObjectId, ref: 'Organization', required: true },
   accessToken: { type: String, required: true, unique: true },
+  tokenExpiryDate: { type: Date, required: true },
   purchaseDate: { type: Date, default: Date.now },
   expiryDate: { type: Date, required: true },
   isActive: { type: Boolean, default: true }

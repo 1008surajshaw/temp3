@@ -53,14 +53,28 @@ export const trackUsage = async (req: Request, res: Response): Promise<void> => 
   try {
     const { accessToken, featureId } = req.body;
 
-    // Validate token
-    const userPlan = await UserPlan.findOne({ accessToken, isActive: true })
+    // Validate token and check expiry
+    let userPlan = await UserPlan.findOne({ accessToken, isActive: true })
       .populate('planId userId');
     
     if (!userPlan) {
       await recordAnalytics(null, featureId, false, Date.now() - startTime);
       res.status(401).json({ success: false, message: 'Invalid access token' });
       return;
+    }
+
+    // Check if token is expired and refresh if needed
+    if (new Date() > userPlan.tokenExpiryDate) {
+      const refreshedPlan = await userPlanRepository.refreshUserPlanToken(userPlan._id.toString());
+      if (!refreshedPlan) {
+        await recordAnalytics(organizationId, featureId, false, Date.now() - startTime);
+        res.status(500).json({ success: false, message: 'Failed to refresh token' });
+        return;
+      }
+      userPlan = refreshedPlan;
+      
+      // Return new token to client
+      res.setHeader('X-New-Token', userPlan.accessToken);
     }
 
     // Extract IDs safely

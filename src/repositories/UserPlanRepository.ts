@@ -10,7 +10,8 @@ export interface CreateUserPlanDto {
 
 export const createUserPlan = async (data: CreateUserPlanDto): Promise<IUserPlan> => {
   const accessToken = generatePlanToken(data.userId, data.planId);
-  return await UserPlan.create({ ...data, accessToken });
+  const tokenExpiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+  return await UserPlan.create({ ...data, accessToken, tokenExpiryDate });
 };
 
 export const findUserPlanById = async (id: string): Promise<IUserPlan | null> => {
@@ -71,4 +72,18 @@ export const getPlanHistory = async (userId: string): Promise<IUserPlan[]> => {
   return await UserPlan.find({ userId })
     .populate('planId organizationId')
     .sort({ createdAt: -1 });
+};
+
+export const refreshUserPlanToken = async (id: string): Promise<IUserPlan | null> => {
+  const newAccessToken = generatePlanToken(id, Date.now().toString());
+  const newTokenExpiryDate = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+  
+  return await UserPlan.findByIdAndUpdate(
+    id,
+    { 
+      accessToken: newAccessToken,
+      tokenExpiryDate: newTokenExpiryDate
+    },
+    { new: true }
+  ).populate('userId planId organizationId');
 };

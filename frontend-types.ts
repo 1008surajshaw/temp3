@@ -178,6 +178,7 @@ export interface UserPlan {
   planId: string;
   organizationId: string;
   accessToken: string;
+  tokenExpiryDate: string;
   purchaseDate: string;
   expiryDate: string;
   isActive: boolean;

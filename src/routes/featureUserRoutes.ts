@@ -13,6 +13,7 @@ router.post('/', featureUserController.createFeatureUser);
 router.get('/:id', featureUserController.getFeatureUser);
 router.get('/feature/:featureId', featureUserController.getFeatureUsersByFeature);
 router.get('/organization/:organizationId', featureUserController.getFeatureUsersByOrganization);
-router.patch('/:id/toggle', featureUserController.toggleFeatureUserActivity);
+router.patch('/toggle', featureUserController.toggleFeatureUserActivity);
 
 export default router;
+

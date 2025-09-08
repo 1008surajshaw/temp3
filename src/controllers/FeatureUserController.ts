@@ -81,7 +81,11 @@ export const validateFeatureUserToken = async (req: Request, res: Response): Pro
 
 export const toggleFeatureUserActivity = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
+    if (!id) {
+      res.status(400).json({ success: false, message: 'User ID is required' });
+      return;
+    }
     const user = await featureUserRepository.toggleFeatureUserActivity(id);
     if (!user) {
       res.status(404).json({ success: false, message: 'Feature user not found' });
