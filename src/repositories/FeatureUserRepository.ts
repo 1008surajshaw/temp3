@@ -42,6 +42,13 @@ export const updateFeatureUserUsage = async (id: string): Promise<IFeatureUser |
   );
 };
 
-export const deactivateFeatureUser = async (id: string): Promise<IFeatureUser | null> => {
-  return await FeatureUser.findByIdAndUpdate(id, { isActive: false }, { new: true });
+export const toggleFeatureUserActivity = async (id: string): Promise<IFeatureUser | null> => {
+  const user = await FeatureUser.findById(id);
+  if (!user) return null;
+  
+  return await FeatureUser.findByIdAndUpdate(
+    id, 
+    { isActive: !user.isActive }, 
+    { new: true }
+  );
 };

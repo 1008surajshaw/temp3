@@ -145,8 +145,8 @@ export interface FeatureUser {
   organizationId: string;
   accessToken: string;
   isActive: boolean;
-  usageCount: number;
-  lastUsed: string;
+  usageCount?: number;
+  lastUsed?: string;
   createdAt: string;
 }
 

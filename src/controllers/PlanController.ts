@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { CreatePlanDto, UpdatePlanDto } from '../dto/plan.dto';
 import * as planRepository from '../repositories/PlanRepository';
+import { AuthRequest } from '../middleware/auth';
 
 export const createPlan = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -65,10 +66,17 @@ export const deletePlan = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const getAllPlans = async (req: Request, res: Response): Promise<void> => {
+export const getAllPlans = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const plans = await planRepository.findAllPlans();
-    res.status(200).json({ success: true, data: plans });
+    // If user has organizationId, filter by organization
+    if (req.owner?.organizationId) {
+      const plans = await planRepository.findPlansByOrganizationId(req.owner.organizationId);
+      res.status(200).json({ success: true, data: plans });
+    } else {
+      // Superadmin can see all plans
+      const plans = await planRepository.findAllPlans();
+      res.status(200).json({ success: true, data: plans });
+    }
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
   }

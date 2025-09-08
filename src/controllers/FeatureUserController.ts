@@ -79,15 +79,20 @@ export const validateFeatureUserToken = async (req: Request, res: Response): Pro
   }
 };
 
-export const deactivateFeatureUser = async (req: Request, res: Response): Promise<void> => {
+export const toggleFeatureUserActivity = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const user = await featureUserRepository.deactivateFeatureUser(id);
+    const user = await featureUserRepository.toggleFeatureUserActivity(id);
     if (!user) {
       res.status(404).json({ success: false, message: 'Feature user not found' });
       return;
     }
-    res.status(200).json({ success: true, message: 'Feature user deactivated' });
+    const status = user.isActive ? 'activated' : 'deactivated';
+    res.status(200).json({ 
+      success: true, 
+      data: user,
+      message: `Feature user ${status}` 
+    });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message });
   }

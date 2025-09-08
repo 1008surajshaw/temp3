@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { CreateFeatureDto, UpdateFeatureDto } from '../dto/feature.dto';
 import * as featureRepository from '../repositories/FeatureRepository';
+import { AuthRequest } from '../middleware/auth';
 
 export const createFeature = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -65,10 +66,17 @@ export const deleteFeature = async (req: Request, res: Response): Promise<void> 
   }
 };
 
-export const getAllFeatures = async (req: Request, res: Response): Promise<void> => {
+export const getAllFeatures = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const features = await featureRepository.findAllFeatures();
-    res.status(200).json({ success: true, data: features });
+    // If user has organizationId, filter by organization
+    if (req.owner?.organizationId) {
+      const features = await featureRepository.findFeaturesByOrganizationId(req.owner.organizationId);
+      res.status(200).json({ success: true, data: features });
+    } else {
+      // Superadmin can see all features
+      const features = await featureRepository.findAllFeatures();
+      res.status(200).json({ success: true, data: features });
+    }
   } catch (error: any) {
     res.status(500).json({ success: false, message: error.message });
   }
